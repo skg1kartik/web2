@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psych2Day v7 - Your Mental Wellness Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7, #bbf7d0);
+            min-height: 100vh;
+        }
+        
+        /* Simplified floating elements */
+        .floating-elements {
+            display: none;
+        }
+        
+        /* Simplified Card Animations */
+        .animate-card {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card-hover {
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .card-hover:hover {
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+        }
+        
+        /* Navigation Animations */
+        .nav-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #22c55e;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-btn:hover::after,
+        .nav-btn.active::after {
+            width: 100%;
+        }
+        
+        .nav-btn.active {
+            background: #f0fdf4;
+            color: #16a34a;
+            font-weight: 600;
+        }
+        
+        /* Simplified Text */
+        .animate-text {
+            opacity: 1;
+        }
+        
+        /* Simplified Button Animations */
+        .btn-animate {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-animate:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(34, 197, 94, 0.2);
+        }
+        
+        /* Simplified Mood Button Animations */
+        .mood-btn {
+            transition: transform 0.2s ease;
+        }
+        
+        .mood-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Simplified Chat Messages */
+        .chat-message {
+            opacity: 1;
+        }
+        
+        /* Simplified Breathing Circle */
+        .breathing-circle {
+            transition: all 2s ease;
+        }
+        
+        /* Simplified Animations */
+        .loading-shimmer {
+            opacity: 0.8;
+        }
+        
+        .tab-content {
+            opacity: 1;
+        }
+        
+        .stagger-1, .stagger-2, .stagger-3, .stagger-4, .stagger-5 { 
+            opacity: 1; 
+        }
+        
+        .pulse-gentle {
+            opacity: 1;
+        }
+        
+        .icon-bounce {
+            transform: translateY(0);
+        }
+        
+        /* Simplified Effects */
+        .modal-animate {
+            opacity: 1;
+        }
+        
+        .chart-bar {
+            transform: scaleY(1);
+        }
+        
+        .glow-effect {
+            border: 1px solid #bbf7d0;
+        }
+        
+        /* Simplified Interactions */
+        .scroll-reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        input:focus, textarea:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+        }
+        
+        .card-glow:hover {
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Overview Tab Styles */
+        .overview-tab {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .overview-tab.active {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .overview-tab:hover {
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Chat Enhancement Styles */
+        .chat-suggestion {
+            transition: all 0.2s ease;
+        }
+        
+        .chat-suggestion:hover {
+            background: #22c55e;
+            color: white;
+        }
+
+        .emotion-selector {
+            transition: all 0.2s ease;
+        }
+        
+        .emotion-selector:hover {
+            transform: scale(1.05);
+        }
+        
+        .emotion-selector.selected {
+            background: #dcfce7;
+            border-color: #22c55e;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative">
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element" style="left: 10%; animation-delay: 0s;">🌟</div>
+        <div class="floating-element" style="left: 20%; animation-delay: 2s;">💙</div>
+        <div class="floating-element" style="left: 30%; animation-delay: 4s;">🌱</div>
+        <div class="floating-element" style="left: 40%; animation-delay: 6s;">✨</div>
+        <div class="floating-element" style="left: 50%; animation-delay: 8s;">🦋</div>
+        <div class="floating-element" style="left: 60%; animation-delay: 10s;">🌈</div>
+        <div class="floating-element" style="left: 70%; animation-delay: 12s;">💚</div>
+        <div class="floating-element" style="left: 80%; animation-delay: 14s;">🌸</div>
+        <div class="floating-element" style="left: 90%; animation-delay: 16s;">🕊️</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-lg shadow-lg border-b border-purple-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4 animate-text">
+                    <div class="text-2xl font-bold text-green-600">
+                        🧠 Psych2Day v7
+                    </div>
+                    <span class="text-gray-700 text-sm font-medium">Your AI-Powered Mental Wellness Companion</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex space-x-2">
+                        <button onclick="showTab('home')" class="nav-btn active text-gray-600 hover:text-green-600 px-3 py-2 rounded-lg text-sm font-medium">Home</button>
+                        <button onclick="showTab('mood')" class="nav-btn text-gray-600 hover:text-green-600 px-3 py-2 rounded-lg text-sm font-medium">Mood</button>
+                        <button onclick="showTab('activities')" class="nav-btn text-gray-600 hover:text-green-600 px-3 py-2 rounded-lg text-sm font-medium">Activities</button>
+                        <button onclick="showTab('support')" class="nav-btn text-gray-600 hover:text-green-600 px-3 py-2 rounded-lg text-sm font-medium">Support</button>
+                        <button onclick="showTab('urgent')" class="nav-btn text-red-600 hover:text-red-700 px-3 py-2 rounded-lg text-sm font-medium bg-red-50 glow-effect">Crisis Help</button>
+                    </div>
+                    <div id="authButtons" class="flex space-x-3">
+                        <button onclick="showAuthModal('login')" class="text-purple-600 hover:text-purple-700 px-4 py-2 rounded-lg font-medium btn-animate">Login</button>
+                        <button onclick="showAuthModal('register')" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-4 py-2 rounded-lg font-medium btn-animate glow-effect">Sign Up</button>
+                    </div>
+                    <div id="userMenu" class="hidden flex items-center space-x-3">
+                        <div class="flex items-center space-x-2 animate-card">
+                            <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold pulse-gentle" id="userInitials">U</div>
+                            <span id="userName" class="text-gray-700 font-medium">User</span>
+                        </div>
+                        <button onclick="logout()" class="text-red-600 hover:text-red-700 px-3 py-2 rounded-lg font-medium btn-animate">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 modal-animate glow-effect">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 icon-bounce">
+                    <span class="text-3xl">💙</span>
+                </div>
+                <h2 id="authTitle" class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">Welcome to Psych2Day</h2>
+                <p class="text-gray-600">Your journey to better mental health starts here</p>
+            </div>
+            
+            <form id="authForm" class="space-y-6">
+                <div id="nameField" class="hidden animate-card">
+                    <label class="block text-gray-700 font-medium mb-2">Full Name</label>
+                    <input type="text" id="fullName" class="w-full p-4 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all" placeholder="Enter your full name">
+                </div>
+                <div class="animate-card stagger-1">
+                    <label class="block text-gray-700 font-medium mb-2">Email</label>
+                    <input type="email" id="email" class="w-full p-4 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all" placeholder="Enter your email" required>
+                </div>
+                <div class="animate-card stagger-2">
+                    <label class="block text-gray-700 font-medium mb-2">Password</label>
+                    <input type="password" id="password" class="w-full p-4 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" id="authSubmit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white py-4 rounded-xl font-medium text-lg btn-animate glow-effect">Login</button>
+            </form>
+            
+            <div class="text-center mt-6 animate-card stagger-3">
+                <p class="text-gray-600">
+                    <span id="authSwitchText">Don't have an account?</span>
+                    <button id="authSwitchBtn" onclick="switchAuthMode()" class="text-purple-600 hover:text-purple-700 font-medium ml-1 btn-animate">Sign up</button>
+                </p>
+            </div>
+            
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl btn-animate">&times;</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8 relative z-10">
+        
+        <!-- Home Tab -->
+        <div id="homeTab" class="tab-content">
+            <!-- Welcome Section -->
+            <div class="text-center mb-12 scroll-reveal">
+                <div id="welcomeMessage">
+                    <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent mb-6 animate-text">
+                        You're Not Alone in This Journey ✨
+                    </h1>
+                    <p class="text-xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed animate-text stagger-1">
+                        This is your safe space - a gentle place for healing, growth, and finding peace. Every step you take here matters.
+                    </p>
+                </div>
+                <div id="loggedInWelcome" class="hidden">
+                    <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent mb-6 animate-text">
+                        Welcome Back, Beautiful Soul! 💙✨
+                    </h1>
+                    <p class="text-xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed animate-text stagger-1">
+                        We're so proud of you for continuing this journey. You're doing amazing, even when it doesn't feel like it.
+                    </p>
+                </div>
+                
+                <!-- Feature Badges -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-3 rounded-full border-2 border-blue-200 card-hover animate-card stagger-1">
+                        <span class="text-blue-700 font-medium">🤗 Judgment-Free Zone</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-3 rounded-full border-2 border-green-200 card-hover animate-card stagger-2">
+                        <span class="text-green-700 font-medium">💚 Always Here for You</span>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-3 rounded-full border-2 border-purple-200 card-hover animate-card stagger-3">
+                        <span class="text-purple-700 font-medium">🌟 Your Pace, Your Way</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced AI Chat Section - Moved to Top -->
+            <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 mb-12 card-hover glow-effect animate-card scroll-reveal">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-6 pulse-gentle icon-bounce">
+                        <span class="text-4xl">💙</span>
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+                        Your Caring AI Companion - Luna 🌙
+                    </h2>
+                    <p class="text-gray-600 text-lg">I'm Luna, your compassionate AI friend. I'm here to listen, understand, and support you through anything. Share whatever is in your heart - I care deeply about your wellbeing. 💙</p>
+                </div>
+                
+                <!-- Emotion Selector -->
+                <div class="mb-6">
+                    <p class="text-center text-gray-700 font-medium mb-4">How are you feeling right now? (This helps me understand you better) ✨</p>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button onclick="selectEmotion('anxious', '😰')" class="emotion-selector px-4 py-2 bg-orange-50 hover:bg-orange-100 border-2 border-orange-200 rounded-full text-orange-700 font-medium">😰 Anxious</button>
+                        <button onclick="selectEmotion('sad', '😢')" class="emotion-selector px-4 py-2 bg-blue-50 hover:bg-blue-100 border-2 border-blue-200 rounded-full text-blue-700 font-medium">😢 Sad</button>
+                        <button onclick="selectEmotion('overwhelmed', '😵‍💫')" class="emotion-selector px-4 py-2 bg-red-50 hover:bg-red-100 border-2 border-red-200 rounded-full text-red-700 font-medium">😵‍💫 Overwhelmed</button>
+                        <button onclick="selectEmotion('lonely', '😔')" class="emotion-selector px-4 py-2 bg-purple-50 hover:bg-purple-100 border-2 border-purple-200 rounded-full text-purple-700 font-medium">😔 Lonely</button>
+                        <button onclick="selectEmotion('stressed', '😤')" class="emotion-selector px-4 py-2 bg-yellow-50 hover:bg-yellow-100 border-2 border-yellow-200 rounded-full text-yellow-700 font-medium">😤 Stressed</button>
+                        <button onclick="selectEmotion('hopeful', '🌟')" class="emotion-selector px-4 py-2 bg-green-50 hover:bg-green-100 border-2 border-green-200 rounded-full text-green-700 font-medium">🌟 Hopeful</button>
+                        <button onclick="selectEmotion('grateful', '🙏')" class="emotion-selector px-4 py-2 bg-pink-50 hover:bg-pink-100 border-2 border-pink-200 rounded-full text-pink-700 font-medium">🙏 Grateful</button>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 border-2 border-purple-100">
+                    <div id="chatMessages" class="h-80 overflow-y-auto mb-6 space-y-4 scroll-smooth">
+                        <div class="chat-message flex items-start">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mr-4 pulse-gentle">
+                                <span class="text-white text-lg">🌙</span>
+                            </div>
+                            <div class="bg-white rounded-2xl p-4 max-w-md shadow-lg border border-blue-100 card-glow">
+                                <p class="text-gray-800">Hello beautiful soul! I'm Luna, and I'm genuinely happy you're here. This is your safe space where you can share anything without judgment. How has your heart been feeling today? 💙✨</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3 mb-4">
+                        <input type="text" id="chatInput" placeholder="Share what's in your heart... I'm here to listen with love 💙" class="flex-1 px-5 py-4 border-2 border-purple-200 rounded-2xl focus:border-purple-500 transition-all text-base" onkeypress="if(event.key==='Enter') sendMessage()">
+                        <button onclick="sendMessage()" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-2xl font-medium btn-animate glow-effect">Send 💙</button>
+                    </div>
+                    
+                    <!-- Enhanced Chat Suggestions -->
+                    <div class="space-y-3">
+                        <p class="text-gray-600 font-medium text-sm">💭 Need help starting? Try one of these:</p>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <button onclick="quickMessage('I\'m having a really tough day and don\'t know how to cope')" class="chat-suggestion px-4 py-3 bg-white hover:bg-purple-50 text-gray-700 rounded-2xl border-2 border-gray-200 hover:border-purple-300 transition-all text-sm text-left">💔 I'm having a tough day</button>
+                            <button onclick="quickMessage('I feel so anxious and my thoughts won\'t stop racing')" class="chat-suggestion px-4 py-3 bg-white hover:bg-purple-50 text-gray-700 rounded-2xl border-2 border-gray-200 hover:border-purple-300 transition-all text-sm text-left">😰 My anxiety is overwhelming</button>
+                            <button onclick="quickMessage('I feel so alone and like nobody understands me')" class="chat-suggestion px-4 py-3 bg-white hover:bg-purple-50 text-gray-700 rounded-2xl border-2 border-gray-200 hover:border-purple-300 transition-all text-sm text-left">😔 I feel so alone</button>
+                            <button onclick="quickMessage('I\'m struggling to find motivation for anything')" class="chat-suggestion px-4 py-3 bg-white hover:bg-purple-50 text-gray-700 rounded-2xl border-2 border-gray-200 hover:border-purple-300 transition-all text-sm text-left">😞 I have no motivation</button>
+                            <button onclick="quickMessage('I want to feel better but don\'t know where to start')" class="chat-suggestion px-4 py-3 bg-white hover:bg-purple-50 text-gray-700 rounded-2xl border-2 border-gray-200 hover:border-purple-300 transition-all text-sm text-left">🌱 I want to heal</button>
+                            <button onclick="quickMessage('Can you help me with some coping strategies?')" class="chat-suggestion px-4 py-3 bg-white hover:bg-purple-50 text-gray-700 rounded-2xl border-2 border-gray-200 hover:border-purple-300 transition-all text-sm text-left">🛠️ I need coping tools</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Daily Todo & Goal Setting -->
+            <div class="grid lg:grid-cols-3 gap-8 mb-12 scroll-reveal">
+                <!-- Enhanced Daily Todo List -->
+                <div class="lg:col-span-2 bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border-2 border-purple-200 card-hover glow-effect animate-card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                            📝 Smart Wellness Goals
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button onclick="openGoalTemplates()" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-xl font-medium btn-animate text-sm">
+                                📋 Templates
+                            </button>
+                            <button onclick="addTodo()" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">
+                                + Add Goal
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Goal Input -->
+                    <div class="mb-6 space-y-4">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2 text-sm">Goal Description</label>
+                                <input type="text" id="todoInput" placeholder="What wellness goal do you want to achieve? 🌟" class="w-full p-4 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all" onkeypress="if(event.key==='Enter') addTodo()">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2 text-sm">Category</label>
+                                <select id="todoCategory" class="w-full p-4 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all">
+                                    <option value="mindfulness">🧘‍♀️ Mindfulness</option>
+                                    <option value="exercise">💪 Physical Activity</option>
+                                    <option value="social">🤝 Social Connection</option>
+                                    <option value="selfcare">💆‍♀️ Self-Care</option>
+                                    <option value="learning">📚 Learning & Growth</option>
+                                    <option value="creativity">🎨 Creative Expression</option>
+                                    <option value="nutrition">🥗 Nutrition</option>
+                                    <option value="sleep">😴 Sleep & Rest</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2 text-sm">Priority</label>
+                                <select id="todoPriority" class="w-full p-3 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all">
+                                    <option value="low">🟢 Low</option>
+                                    <option value="medium" selected>🟡 Medium</option>
+                                    <option value="high">🔴 High</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2 text-sm">Estimated Time</label>
+                                <select id="todoTime" class="w-full p-3 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all">
+                                    <option value="5">⏱️ 5 minutes</option>
+                                    <option value="15" selected>⏰ 15 minutes</option>
+                                    <option value="30">🕐 30 minutes</option>
+                                    <option value="60">🕑 1 hour</option>
+                                    <option value="120">🕕 2+ hours</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2 text-sm">Reminder</label>
+                                <select id="todoReminder" class="w-full p-3 border-2 border-purple-200 rounded-xl focus:border-purple-500 transition-all">
+                                    <option value="none">🔕 No reminder</option>
+                                    <option value="morning">🌅 Morning</option>
+                                    <option value="afternoon">☀️ Afternoon</option>
+                                    <option value="evening">🌙 Evening</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Goal Filters -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button onclick="filterTodos('all')" id="filterAll" class="filter-btn active px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-700">All</button>
+                        <button onclick="filterTodos('pending')" id="filterPending" class="filter-btn px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">Pending</button>
+                        <button onclick="filterTodos('completed')" id="filterCompleted" class="filter-btn px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">Completed</button>
+                        <button onclick="filterTodos('high')" id="filterHigh" class="filter-btn px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">High Priority</button>
+                    </div>
+                    
+                    <div id="todoList" class="space-y-3 max-h-80 overflow-y-auto">
+                        <!-- Enhanced todos will be added here -->
+                    </div>
+                    
+                    <!-- Enhanced Progress Section -->
+                    <div class="mt-6 space-y-4">
+                        <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-green-800 font-medium">Today's Progress</span>
+                                <span id="todoProgress" class="text-green-600 font-bold">0/0 completed</span>
+                            </div>
+                            <div class="w-full bg-green-200 rounded-full h-3 mb-2">
+                                <div id="todoProgressBar" class="bg-gradient-to-r from-green-400 to-green-600 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-green-700">
+                                <span id="totalTime">Total time: 0 min</span>
+                                <span id="completedTime">Completed: 0 min</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Category Breakdown -->
+                        <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200">
+                            <h4 class="text-blue-800 font-medium mb-3">Category Breakdown</h4>
+                            <div id="categoryBreakdown" class="grid grid-cols-2 gap-2 text-xs">
+                                <!-- Category stats will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Quick Actions & Stats -->
+                <div class="space-y-6">
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 border-2 border-blue-200 card-hover glow-effect animate-card stagger-1">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4 text-center">⚡ Quick Mood Check</h4>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="quickMood('😢', 2)" class="mood-btn text-2xl p-3 rounded-2xl hover:bg-red-50 transition-all">😢</button>
+                            <button onclick="quickMood('😐', 3)" class="mood-btn text-2xl p-3 rounded-2xl hover:bg-yellow-50 transition-all">😐</button>
+                            <button onclick="quickMood('😊', 4)" class="mood-btn text-2xl p-3 rounded-2xl hover:bg-green-50 transition-all">😊</button>
+                        </div>
+                        <div id="quickMoodResult" class="text-center mt-3 text-sm text-gray-600"></div>
+                    </div>
+                    
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 border-2 border-green-200 card-hover glow-effect animate-card stagger-2">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4 text-center">📊 This Week</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Mood Entries</span>
+                                <span class="font-bold text-blue-600" id="weekMoodCount">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Goals Completed</span>
+                                <span class="font-bold text-green-600" id="weekGoalsCount">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Streak Days</span>
+                                <span class="font-bold text-purple-600" id="streakCount">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Focus Time</span>
+                                <span class="font-bold text-orange-600" id="weekFocusTime">0h</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Goal Insights -->
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 border-2 border-purple-200 card-hover glow-effect animate-card stagger-3">
+                        <h4 class="text-lg font-bold text-gray-800 mb-4 text-center">💡 Goal Insights</h4>
+                        <div id="goalInsights" class="space-y-2 text-sm">
+                            <p class="text-gray-600">Complete a few goals to see personalized insights!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Dashboard -->
+            <div class="mb-12 scroll-reveal">
+                <h2 class="text-3xl font-bold text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-8 animate-text">
+                    Your Wellness Dashboard 📊
+                </h2>
+                
+                <!-- Overview Tabs -->
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <button onclick="showOverviewTab('quick-access')" class="overview-tab active px-6 py-3 rounded-2xl bg-white border-2 border-purple-200 font-medium text-gray-700">
+                        🚀 Quick Access
+                    </button>
+                    <button onclick="showOverviewTab('progress')" class="overview-tab px-6 py-3 rounded-2xl bg-white border-2 border-purple-200 font-medium text-gray-700">
+                        📈 Progress Overview
+                    </button>
+                    <button onclick="showOverviewTab('wellness-tools')" class="overview-tab px-6 py-3 rounded-2xl bg-white border-2 border-purple-200 font-medium text-gray-700">
+                        🛠️ Wellness Tools
+                    </button>
+                    <button onclick="showOverviewTab('insights')" class="overview-tab px-6 py-3 rounded-2xl bg-white border-2 border-purple-200 font-medium text-gray-700">
+                        💡 Personal Insights
+                    </button>
+                </div>
+
+                <!-- Quick Access Tab -->
+                <div id="quick-access-content" class="overview-content">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-6 border-2 border-blue-200 card-hover glow-effect animate-card text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">😊</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Track Mood</h3>
+                            <p class="text-gray-600 text-sm mb-4">Log how you're feeling today</p>
+                            <button onclick="showTab('mood')" class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Track Now</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-6 border-2 border-green-200 card-hover glow-effect animate-card stagger-1 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🧘‍♀️</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Breathing Exercise</h3>
+                            <p class="text-gray-600 text-sm mb-4">Calm your mind in minutes</p>
+                            <button onclick="showTab('activities')" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Start Breathing</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-6 border-2 border-purple-200 card-hover glow-effect animate-card stagger-2 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🤝</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Get Support</h3>
+                            <p class="text-gray-600 text-sm mb-4">Connect with others</p>
+                            <button onclick="showTab('support')" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Find Support</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-6 border-2 border-red-200 card-hover glow-effect animate-card stagger-3 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🚨</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Crisis Help</h3>
+                            <p class="text-gray-600 text-sm mb-4">Immediate support available</p>
+                            <button onclick="showTab('urgent')" class="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Get Help Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Overview Tab -->
+                <div id="progress-content" class="overview-content hidden">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-6 border-2 border-purple-200 card-hover glow-effect animate-card">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">📊 Mood Trends</h3>
+                            <div id="miniMoodChart" class="h-32 flex items-end justify-between space-x-2 mb-4 p-2 bg-gradient-to-t from-purple-50 to-transparent rounded-xl">
+                                <!-- Mini chart will be generated here -->
+                            </div>
+                            <p class="text-gray-600 text-sm text-center">Last 7 days average</p>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-6 border-2 border-green-200 card-hover glow-effect animate-card stagger-1">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">🎯 Goals Progress</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">Daily Check-in</span>
+                                    <span class="text-green-600 font-bold">85%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-6 border-2 border-blue-200 card-hover glow-effect animate-card stagger-2">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">⭐ Achievements</h3>
+                            <div class="flex justify-center space-x-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-white text-sm">🏆</div>
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white text-sm">⭐</div>
+                                <div class="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white text-sm">💎</div>
+                            </div>
+                            <p class="text-gray-600 text-sm text-center mt-2">3 badges earned</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wellness Tools Tab -->
+                <div id="wellness-tools-content" class="overview-content hidden">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- Breathing Exercises -->
+                        <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl p-6 border-2 border-blue-200 card-hover glow-effect animate-card text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🫁</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Breathing Exercises</h3>
+                            <p class="text-gray-600 text-sm mb-4">4-7-8, Box breathing & more</p>
+                            <button onclick="showTab('activities')" class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Start Breathing</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 border-2 border-indigo-200 card-hover glow-effect animate-card stagger-1 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🎵</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Calming Sounds</h3>
+                            <p class="text-gray-600 text-sm mb-4">Nature sounds for relaxation</p>
+                            <button onclick="startCalmingSounds()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Play Sounds</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-6 border-2 border-teal-200 card-hover glow-effect animate-card stagger-2 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">📝</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Gratitude Journal</h3>
+                            <p class="text-gray-600 text-sm mb-4">Write what you're grateful for</p>
+                            <button onclick="openGratitudeJournal()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Start Writing</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-6 border-2 border-green-200 card-hover glow-effect animate-card stagger-3 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🧘‍♀️</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Guided Meditation</h3>
+                            <p class="text-gray-600 text-sm mb-4">5-30 minute sessions</p>
+                            <button onclick="startMeditation()" class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Meditate</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl p-6 border-2 border-yellow-200 card-hover glow-effect animate-card stagger-4 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">💪</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Progressive Relaxation</h3>
+                            <p class="text-gray-600 text-sm mb-4">Muscle tension release</p>
+                            <button onclick="startProgressiveRelaxation()" class="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Relax</button>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-rose-50 to-pink-50 rounded-3xl p-6 border-2 border-rose-200 card-hover glow-effect animate-card stagger-5 text-center">
+                            <div class="text-4xl mb-4 pulse-gentle">🎯</div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Goal Setting</h3>
+                            <p class="text-gray-600 text-sm mb-4">Set and track wellness goals</p>
+                            <button onclick="openGoalSetting()" class="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white px-4 py-2 rounded-xl font-medium btn-animate">Set Goals</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Wellness Activities -->
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-8 border-2 border-purple-200 card-hover glow-effect">
+                        <h3 class="text-2xl font-bold text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">
+                            🌟 More Wellness Activities
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border border-purple-200 card-hover">
+                                    <h4 class="font-bold text-purple-800 mb-2">🌅 Morning Routine Builder</h4>
+                                    <p class="text-purple-700 text-sm mb-3">Create a personalized morning routine for better mental health</p>
+                                    <button onclick="buildMorningRoutine()" class="text-purple-600 hover:text-purple-700 font-medium text-sm btn-animate">Build Routine →</button>
+                                </div>
+                                
+                                <div class="p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl border border-green-200 card-hover">
+                                    <h4 class="font-bold text-green-800 mb-2">🌱 Habit Tracker</h4>
+                                    <p class="text-green-700 text-sm mb-3">Track positive habits and build consistency</p>
+                                    <button onclick="openHabitTracker()" class="text-green-600 hover:text-green-700 font-medium text-sm btn-animate">Track Habits →</button>
+                                </div>
+                                
+                                <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-200 card-hover">
+                                    <h4 class="font-bold text-blue-800 mb-2">💭 Thought Challenger</h4>
+                                    <p class="text-blue-700 text-sm mb-3">Challenge negative thoughts with CBT techniques</p>
+                                    <button onclick="openThoughtChallenger()" class="text-blue-600 hover:text-blue-700 font-medium text-sm btn-animate">Challenge Thoughts →</button>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl border border-orange-200 card-hover">
+                                    <h4 class="font-bold text-orange-800 mb-2">🔥 Stress Relief Kit</h4>
+                                    <p class="text-orange-700 text-sm mb-3">Quick techniques for immediate stress relief</p>
+                                    <button onclick="openStressReliefKit()" class="text-orange-600 hover:text-orange-700 font-medium text-sm btn-animate">Get Relief →</button>
+                                </div>
+                                
+                                <div class="p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-2xl border border-pink-200 card-hover">
+                                    <h4 class="font-bold text-pink-800 mb-2">💝 Self-Care Planner</h4>
+                                    <p class="text-pink-700 text-sm mb-3">Plan and schedule self-care activities</p>
+                                    <button onclick="openSelfCarePlanner()" class="text-pink-600 hover:text-pink-700 font-medium text-sm btn-animate">Plan Self-Care →</button>
+                                </div>
+                                
+                                <div class="p-4 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl border border-cyan-200 card-hover">
+                                    <h4 class="font-bold text-cyan-800 mb-2">🎨 Creative Expression</h4>
+                                    <p class="text-cyan-700 text-sm mb-3">Art therapy and creative wellness activities</p>
+                                    <button onclick="openCreativeExpression()" class="text-cyan-600 hover:text-cyan-700 font-medium text-sm btn-animate">Create →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Insights Tab -->
+                <div id="insights-content" class="overview-content hidden">
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-8 border-2 border-purple-200 card-hover glow-effect animate-card">
+                        <h3 class="text-2xl font-bold text-center bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">
+                            💡 Your Personal Insights
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl border border-blue-200">
+                                    <h4 class="font-bold text-blue-800 mb-2">🌅 Best Time of Day</h4>
+                                    <p class="text-blue-700 text-sm">You tend to feel most positive in the morning hours. Consider scheduling important activities then!</p>
+                                </div>
+                                <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200">
+                                    <h4 class="font-bold text-green-800 mb-2">📈 Progress Streak</h4>
+                                    <p class="text-green-700 text-sm">You've been consistently tracking your mood for 5 days. Keep up the amazing work!</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border border-purple-200">
+                                    <h4 class="font-bold text-purple-800 mb-2">🎯 Recommended Focus</h4>
+                                    <p class="text-purple-700 text-sm">Based on your patterns, breathing exercises might be especially helpful for you.</p>
+                                </div>
+                                <div class="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl border border-yellow-200">
+                                    <h4 class="font-bold text-yellow-800 mb-2">⭐ Celebration</h4>
+                                    <p class="text-yellow-700 text-sm">You've shown incredible resilience this week. You should be proud of yourself!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Mood Tab -->
+        <div id="moodTab" class="tab-content hidden">
+            <div class="text-center mb-8 scroll-reveal">
+                <h2 class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 animate-text">
+                    Your Mood Journey 🌈
+                </h2>
+                <p class="text-xl text-gray-600 animate-text stagger-1">Track your emotions to understand patterns and celebrate progress</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Mood Tracker -->
+                <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 card-hover glow-effect animate-card scroll-reveal">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">How are you feeling today? ✨</h3>
+                    <div class="grid grid-cols-5 gap-4 mb-8">
+                        <div class="text-center">
+                            <button onclick="trackMood('😢', 1)" class="mood-btn text-5xl p-6 rounded-3xl hover:bg-red-50 w-full transition-all">😢</button>
+                            <p class="text-gray-600 mt-3 text-sm font-medium">Very Sad</p>
+                        </div>
+                        <div class="text-center">
+                            <button onclick="trackMood('😔', 2)" class="mood-btn text-5xl p-6 rounded-3xl hover:bg-orange-50 w-full transition-all">😔</button>
+                            <p class="text-gray-600 mt-3 text-sm font-medium">Sad</p>
+                        </div>
+                        <div class="text-center">
+                            <button onclick="trackMood('😐', 3)" class="mood-btn text-5xl p-6 rounded-3xl hover:bg-yellow-50 w-full transition-all">😐</button>
+                            <p class="text-gray-600 mt-3 text-sm font-medium">Neutral</p>
+                        </div>
+                        <div class="text-center">
+                            <button onclick="trackMood('😊', 4)" class="mood-btn text-5xl p-6 rounded-3xl hover:bg-green-50 w-full transition-all">😊</button>
+                            <p class="text-gray-600 mt-3 text-sm font-medium">Happy</p>
+                        </div>
+                        <div class="text-center">
+                            <button onclick="trackMood('😄', 5)" class="mood-btn text-5xl p-6 rounded-3xl hover:bg-green-100 w-full transition-all">😄</button>
+                            <p class="text-gray-600 mt-3 text-sm font-medium">Very Happy</p>
+                        </div>
+                    </div>
+                    <div id="todayMood" class="text-center text-xl text-gray-600 bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-2xl border-2 border-green-200"></div>
+                </div>
+                
+                <!-- Progress Chart -->
+                <div class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 card-hover glow-effect animate-card scroll-reveal stagger-1">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-8 text-center">Your Progress 📊</h3>
+                    <div id="moodChart" class="h-64 flex items-end justify-between space-x-3 mb-6 p-4 bg-gradient-to-t from-purple-50 to-transparent rounded-xl">
+                        <!-- Chart bars will be generated here -->
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-500 mb-8 px-4">
+                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                    </div>
+                    
+                    <div class="p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border-2 border-purple-200 pulse-gentle">
+                        <h4 class="font-bold text-purple-800 mb-3 text-lg">💡 Insights</h4>
+                        <p id="moodInsight" class="text-purple-700">Track your mood for a few days to see helpful insights!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Tab -->
+        <div id="activitiesTab" class="tab-content hidden">
+            <div class="text-center mb-8 scroll-reveal">
+                <h2 class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 animate-text">
+                    Wellness Activities 🧘‍♀️
+                </h2>
+                <p class="text-xl text-gray-600 animate-text stagger-1">Interactive exercises designed to boost your mental wellbeing</p>
+            </div>
+            
+            <!-- Exercise Selection -->
+            <div class="grid md:grid-cols-4 gap-4 mb-8 scroll-reveal">
+                <button onclick="showExercise('breathing')" id="breathingBtn" class="exercise-tab active bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-2xl font-medium btn-animate">🫁 Breathing</button>
+                <button onclick="showExercise('meditation')" id="meditationBtn" class="exercise-tab bg-white border-2 border-purple-200 text-gray-700 px-6 py-3 rounded-2xl font-medium btn-animate">🧘‍♀️ Meditation</button>
+                <button onclick="showExercise('relaxation')" id="relaxationBtn" class="exercise-tab bg-white border-2 border-purple-200 text-gray-700 px-6 py-3 rounded-2xl font-medium btn-animate">💪 Relaxation</button>
+                <button onclick="showExercise('mindfulness')" id="mindfulnessBtn" class="exercise-tab bg-white border-2 border-purple-200 text-gray-700 px-6 py-3 rounded-2xl font-medium btn-animate">🌸 Mindfulness</button>
+            </div>
+            
+            <!-- Breathing Exercise -->
+            <div id="breathingExercise" class="exercise-content">
+                <div class="bg-gradient-to-br from-blue-50 via-purple-50 to-cyan-50 rounded-3xl p-10 border-2 border-blue-200 card-hover glow-effect animate-card scroll-reveal mb-8">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                            4-7-8 Breathing Exercise 🫁
+                        </h3>
+                        <p class="text-gray-600 text-lg">A powerful technique to calm anxiety and reduce stress. Follow the breathing circle.</p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div id="breathingCircle" class="w-64 h-64 rounded-full bg-gradient-to-br from-blue-400 via-purple-500 to-cyan-400 flex items-center justify-center mb-8 breathing-circle shadow-2xl">
+                            <div class="text-white text-center">
+                                <div id="breathingText" class="text-2xl font-bold mb-2">Click to Start</div>
+                                <div id="breathingCount" class="text-xl"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-6 mb-8">
+                            <button onclick="startBreathing()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate glow-effect">Start Exercise</button>
+                            <button onclick="stopBreathing()" class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate">Stop</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other Breathing Techniques -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-6 border-2 border-cyan-200 card-hover glow-effect">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">📦 Box Breathing</h4>
+                        <p class="text-gray-600 mb-4">Inhale 4, Hold 4, Exhale 4, Hold 4. Perfect for focus and calm.</p>
+                        <button onclick="startBoxBreathing()" class="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-medium btn-animate">Try Box Breathing</button>
+                    </div>
+                    
+                    <div class="bg-white/90 backdrop-blur-lg rounded-3xl p-6 border-2 border-green-200 card-hover glow-effect">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4">🌊 Ocean Breathing</h4>
+                        <p class="text-gray-600 mb-4">Deep, rhythmic breathing that sounds like ocean waves.</p>
+                        <button onclick="startOceanBreathing()" class="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white px-6 py-3 rounded-xl font-medium btn-animate">Try Ocean Breathing</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Meditation Exercise -->
+            <div id="meditationExercise" class="exercise-content hidden">
+                <div class="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-3xl p-10 border-2 border-green-200 card-hover glow-effect animate-card scroll-reveal mb-8">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold bg-gradient-to-r from-green-600 to-teal-600 bg-clip-text text-transparent mb-4">
+                            Guided Meditation 🧘‍♀️
+                        </h3>
+                        <p class="text-gray-600 text-lg">Find inner peace with guided meditation sessions.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 text-center card-hover">
+                            <div class="text-4xl mb-4">🌅</div>
+                            <h4 class="text-lg font-bold text-gray-800 mb-2">5-Minute Morning</h4>
+                            <p class="text-gray-600 text-sm mb-4">Start your day with intention</p>
+                            <button onclick="startMeditation(5, 'morning')" class="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white px-4 py-2 rounded-xl font-medium btn-animate">Start</button>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 text-center card-hover">
+                            <div class="text-4xl mb-4">☀️</div>
+                            <h4 class="text-lg font-bold text-gray-800 mb-2">10-Minute Focus</h4>
+                            <p class="text-gray-600 text-sm mb-4">Improve concentration</p>
+                            <button onclick="startMeditation(10, 'focus')" class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl font-medium btn-animate">Start</button>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 text-center card-hover">
+                            <div class="text-4xl mb-4">🌙</div>
+                            <h4 class="text-lg font-bold text-gray-800 mb-2">15-Minute Sleep</h4>
+                            <p class="text-gray-600 text-sm mb-4">Prepare for restful sleep</p>
+                            <button onclick="startMeditation(15, 'sleep')" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl font-medium btn-animate">Start</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progressive Relaxation -->
+            <div id="relaxationExercise" class="exercise-content hidden">
+                <div class="bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 rounded-3xl p-10 border-2 border-yellow-200 card-hover glow-effect animate-card scroll-reveal">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-4">
+                            Progressive Muscle Relaxation 💪
+                        </h3>
+                        <p class="text-gray-600 text-lg">Release physical tension by systematically relaxing muscle groups.</p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div id="relaxationGuide" class="bg-white/90 backdrop-blur-lg rounded-2xl p-8 mb-8 max-w-2xl text-center">
+                            <div class="text-6xl mb-4" id="relaxationEmoji">🧘‍♀️</div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-4" id="relaxationStep">Ready to begin?</h4>
+                            <p class="text-gray-600" id="relaxationInstructions">Click start to begin the progressive relaxation exercise. We'll guide you through each muscle group.</p>
+                        </div>
+                        
+                        <div class="flex space-x-6">
+                            <button onclick="startProgressiveRelaxation()" class="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate glow-effect">Start Relaxation</button>
+                            <button onclick="stopProgressiveRelaxation()" class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate">Stop</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mindfulness Exercise -->
+            <div id="mindfulnessExercise" class="exercise-content hidden">
+                <div class="bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 rounded-3xl p-10 border-2 border-pink-200 card-hover glow-effect animate-card scroll-reveal">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                            Mindfulness Exercises 🌸
+                        </h3>
+                        <p class="text-gray-600 text-lg">Practice present-moment awareness with these mindfulness techniques.</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 card-hover">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">👁️ 5-4-3-2-1 Grounding</h4>
+                            <p class="text-gray-600 mb-4">Notice 5 things you see, 4 you hear, 3 you feel, 2 you smell, 1 you taste.</p>
+                            <button onclick="start54321()" class="bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white px-6 py-3 rounded-xl font-medium btn-animate">Start Grounding</button>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 card-hover">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">🍃 Body Scan</h4>
+                            <p class="text-gray-600 mb-4">Mindfully scan your body from head to toe, noticing sensations.</p>
+                            <button onclick="startBodyScan()" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-medium btn-animate">Start Body Scan</button>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 card-hover">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">🌊 Mindful Breathing</h4>
+                            <p class="text-gray-600 mb-4">Focus entirely on your natural breath without changing it.</p>
+                            <button onclick="startMindfulBreathing()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-6 py-3 rounded-xl font-medium btn-animate">Start Mindful Breathing</button>
+                        </div>
+                        
+                        <div class="bg-white/90 backdrop-blur-lg rounded-2xl p-6 card-hover">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">💭 Thought Observation</h4>
+                            <p class="text-gray-600 mb-4">Observe your thoughts without judgment, like clouds passing by.</p>
+                            <button onclick="startThoughtObservation()" class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-medium btn-animate">Start Observing</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Tab -->
+        <div id="supportTab" class="tab-content hidden">
+            <div class="text-center mb-8 scroll-reveal">
+                <h2 class="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4 animate-text">
+                    Support Network 🤝
+                </h2>
+                <p class="text-xl text-gray-600 animate-text stagger-1">Multiple layers of support for your mental health journey</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Peer Support -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border-2 border-blue-200 card-hover glow-effect animate-card scroll-reveal">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6 pulse-gentle icon-bounce">
+                            <span class="text-3xl">🤝</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Peer Support Groups</h3>
+                        <p class="text-gray-600">Connect with others who understand your journey</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 card-glow">
+                        <h4 class="text-lg font-bold text-gray-800 mb-3">Anxiety Support Circle 💙</h4>
+                        <p class="text-gray-600 mb-4 text-sm">Daily check-ins and coping strategies for anxiety management</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">347 members • Next: Today 7 PM</span>
+                            <button class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg text-sm btn-animate">Join Group</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Professional Support -->
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border-2 border-green-200 card-hover glow-effect animate-card scroll-reveal stagger-1">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 pulse-gentle icon-bounce">
+                            <span class="text-3xl">👩‍⚕️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Professional Support</h3>
+                        <p class="text-gray-600">Licensed therapists and mental health professionals</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 border-2 border-green-200 card-glow">
+                        <h4 class="text-lg font-bold text-gray-800 mb-3">🎯 Therapy Matching</h4>
+                        <p class="text-gray-600 mb-4 text-sm">AI-powered matching with therapists based on your specific needs</p>
+                        <button class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3 rounded-xl font-medium btn-animate glow-effect">Find My Therapist</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Crisis Help Tab -->
+        <div id="urgentTab" class="tab-content hidden">
+            <div class="text-center mb-8 scroll-reveal">
+                <h2 class="text-5xl font-bold text-red-600 mb-4 animate-text pulse-gentle">
+                    Crisis Support - You're Not Alone 🚨
+                </h2>
+                <p class="text-xl text-gray-600 animate-text stagger-1">If you're in crisis, please reach out immediately. Help is available 24/7.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Crisis Hotline -->
+                <div class="bg-gradient-to-br from-red-50 to-pink-50 rounded-3xl p-8 border-2 border-red-200 text-center card-hover glow-effect animate-card scroll-reveal">
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6 pulse-gentle icon-bounce">
+                        <span class="text-3xl">📞</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Crisis Hotline</h3>
+                    <p class="text-4xl font-bold text-red-600 mb-4 pulse-gentle">988</p>
+                    <p class="text-gray-600 mb-6">24/7 Suicide & Crisis Lifeline</p>
+                    <button class="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate glow-effect">Call Now</button>
+                </div>
+                
+                <!-- Crisis Text -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 border-2 border-blue-200 text-center card-hover glow-effect animate-card scroll-reveal stagger-1">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6 pulse-gentle icon-bounce">
+                        <span class="text-3xl">💬</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Crisis Text Line</h3>
+                    <p class="text-2xl font-bold text-blue-600 mb-4">Text HOME to 741741</p>
+                    <p class="text-gray-600 mb-6">24/7 Text Support</p>
+                    <button class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate glow-effect">Text Now</button>
+                </div>
+                
+                <!-- Emergency Services -->
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border-2 border-green-200 text-center card-hover glow-effect animate-card scroll-reveal stagger-2">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 pulse-gentle icon-bounce">
+                        <span class="text-3xl">🏥</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Emergency Services</h3>
+                    <p class="text-4xl font-bold text-green-600 mb-4 pulse-gentle">911</p>
+                    <p class="text-gray-600 mb-6">Immediate Emergency</p>
+                    <button class="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-2xl font-medium text-lg btn-animate glow-effect">Call 911</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let isLoggedIn = false;
+        let currentAuthMode = 'login';
+        let breathingInterval = null;
+        let breathingPhase = 'inhale';
+        let breathingCount = 0;
+        let moodData = [];
+        let currentEmotion = null;
+        let chatContext = [];
+        let todos = [];
+        let exerciseInterval = null;
+        let currentExercise = null;
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                moodData = JSON.parse(localStorage.getItem('moodData') || '[]');
+                todos = JSON.parse(localStorage.getItem('todos') || '[]');
+            } catch (e) {
+                moodData = [];
+                todos = [];
+            }
+            
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    isLoggedIn = true;
+                    showUserInterface();
+                } catch (e) {
+                    localStorage.removeItem('currentUser');
+                }
+            }
+            
+            showTab('home');
+            updateMoodChart();
+            updateMiniMoodChart();
+            updateTodoList();
+            updateWeeklyStats();
+            updateCategoryBreakdown();
+            updateGoalInsights();
+            initScrollAnimations();
+        });
+        
+        // Scroll animations
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        // Overview Tab Functions
+        function showOverviewTab(tabName) {
+            // Hide all overview content
+            document.querySelectorAll('.overview-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.overview-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // Emotion Selection
+        function selectEmotion(emotion, emoji) {
+            currentEmotion = emotion;
+            
+            // Remove selected class from all emotion buttons
+            document.querySelectorAll('.emotion-selector').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked button
+            event.target.classList.add('selected');
+            
+            // Add contextual AI response
+            const emotionResponses = {
+                'anxious': "I can sense you're feeling anxious right now. That must feel really overwhelming. Remember, anxiety is your mind trying to protect you, even though it doesn't always feel helpful. Let's work through this together. What's been weighing on your mind? 💙",
+                'sad': "I'm holding space for your sadness right now. It's okay to feel this way - sadness is a natural part of being human, and it shows how deeply you care. You don't have to carry this alone. What's been making your heart heavy? 💙",
+                'overwhelmed': "Feeling overwhelmed can be so exhausting. It's like everything is coming at you at once, and that's incredibly difficult to handle. You're being so brave by reaching out. Let's break things down together, one small step at a time. What feels most pressing right now? 💙",
+                'lonely': "Loneliness can feel so isolating, like you're the only one in the world feeling this way. But you're not alone - I'm here with you, and your feelings matter deeply to me. Sometimes the bravest thing we can do is reach out, just like you're doing now. What's been making you feel most alone? 💙",
+                'stressed': "Stress can feel like it's taking over everything, can't it? Your body and mind are working so hard right now. I want you to know that it's okay to feel stressed, and it's okay to need support. You're handling more than you should have to. What's been the biggest source of stress for you lately? 💙",
+                'hopeful': "I can feel the hope radiating from you, and it's beautiful. Even in difficult times, you're finding reasons to keep going - that takes incredible strength. Hope is such a powerful force. What's been giving you hope lately? I'd love to celebrate that with you! ✨",
+                'grateful': "Your gratitude is touching my heart. Even when things are hard, you're finding things to be thankful for - that's a sign of incredible resilience and wisdom. Gratitude can be such a healing force. What's been filling your heart with gratitude? 🙏"
+            };
+            
+            if (emotionResponses[emotion]) {
+                setTimeout(() => {
+                    addChatMessage(emotionResponses[emotion], 'ai');
+                }, 1000);
+            }
+        }
+        
+        // Tab Navigation with animations
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.add('hidden');
+                tab.style.opacity = '0';
+            });
+            
+            const selectedTab = document.getElementById(tabName + 'Tab');
+            if (selectedTab) {
+                selectedTab.classList.remove('hidden');
+                setTimeout(() => {
+                    selectedTab.style.opacity = '1';
+                }, 50);
+            }
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            
+            const activeButton = document.querySelector(`[onclick="showTab('${tabName}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+        
+        // Authentication Functions
+        function showAuthModal(mode) {
+            currentAuthMode = mode;
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('authTitle');
+            const submitBtn = document.getElementById('authSubmit');
+            const nameField = document.getElementById('nameField');
+            const switchText = document.getElementById('authSwitchText');
+            const switchBtn = document.getElementById('authSwitchBtn');
+            
+            if (mode === 'login') {
+                title.textContent = 'Welcome Back! 💙';
+                submitBtn.textContent = 'Login';
+                nameField.classList.add('hidden');
+                switchText.textContent = "Don't have an account?";
+                switchBtn.textContent = 'Sign up';
+            } else {
+                title.textContent = 'Join Psych2Day! ✨';
+                submitBtn.textContent = 'Create Account';
+                nameField.classList.remove('hidden');
+                switchText.textContent = 'Already have an account?';
+                switchBtn.textContent = 'Login';
+            }
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.style.opacity = '1';
+                document.getElementById('authForm').reset();
+            }, 300);
+        }
+        
+        function switchAuthMode() {
+            const newMode = currentAuthMode === 'login' ? 'register' : 'login';
+            showAuthModal(newMode);
+        }
+        
+        // Handle form submission
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const fullName = document.getElementById('fullName').value;
+            
+            // Add loading animation
+            const submitBtn = document.getElementById('authSubmit');
+            submitBtn.classList.add('loading-shimmer');
+            submitBtn.textContent = 'Processing...';
+            
+            setTimeout(() => {
+                if (currentAuthMode === 'register') {
+                    const newUser = {
+                        id: Date.now(),
+                        name: fullName,
+                        email: email,
+                        joinDate: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(newUser));
+                    currentUser = newUser;
+                    isLoggedIn = true;
+                    
+                    showUserInterface();
+                    closeAuthModal();
+                    showSuccessMessage('Welcome to Psych2Day! Your account has been created successfully. ✨');
+                } else {
+                    const demoUser = {
+                        id: 1,
+                        name: 'Demo User',
+                        email: email,
+                        joinDate: new Date().toISOString()
+                    };
+                    
+                    localStorage.setItem('currentUser', JSON.stringify(demoUser));
+                    currentUser = demoUser;
+                    isLoggedIn = true;
+                    
+                    showUserInterface();
+                    closeAuthModal();
+                    showSuccessMessage('Welcome back! You have been logged in successfully. 💙');
+                }
+                
+                submitBtn.classList.remove('loading-shimmer');
+                submitBtn.textContent = currentAuthMode === 'login' ? 'Login' : 'Create Account';
+            }, 1500);
+        });
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-4 right-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-4 rounded-2xl shadow-2xl z-50 animate-card glow-effect';
+            successDiv.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">✅</span>
+                    <span class="font-medium">${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.style.opacity = '0';
+                successDiv.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(successDiv);
+                }, 300);
+            }, 3000);
+        }
+        
+        function showUserInterface() {
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            
+            if (currentUser) {
+                const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                document.getElementById('userInitials').textContent = initials;
+                document.getElementById('userName').textContent = currentUser.name;
+            }
+            
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            document.getElementById('loggedInWelcome').classList.remove('hidden');
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            isLoggedIn = false;
+            
+            document.getElementById('authButtons').classList.remove('hidden');
+            document.getElementById('userMenu').classList.add('hidden');
+            
+            document.getElementById('welcomeMessage').classList.remove('hidden');
+            document.getElementById('loggedInWelcome').classList.add('hidden');
+            
+            showTab('home');
+            showSuccessMessage('You have been logged out successfully. 👋');
+        }
+        
+        // Enhanced Chat Functions with more caring responses
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addChatMessage(message, 'user');
+                input.value = '';
+                
+                // Add to chat context for better responses
+                chatContext.push({
+                    type: 'user',
+                    message: message,
+                    emotion: currentEmotion,
+                    timestamp: new Date()
+                });
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    const response = generateCaringResponse(message);
+                    addChatMessage(response, 'ai');
+                    
+                    chatContext.push({
+                        type: 'ai',
+                        message: response,
+                        timestamp: new Date()
+                    });
+                }, 2000 + Math.random() * 1000); // Variable delay for more natural feel
+            }
+        }
+        
+        function generateCaringResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Analyze message for keywords and emotional content
+            const anxietyKeywords = ['anxious', 'anxiety', 'worried', 'panic', 'nervous', 'scared', 'fear'];
+            const sadnessKeywords = ['sad', 'depressed', 'down', 'hopeless', 'empty', 'worthless', 'cry'];
+            const lonelinessKeywords = ['alone', 'lonely', 'isolated', 'nobody', 'friends', 'connection'];
+            const stressKeywords = ['stress', 'overwhelmed', 'pressure', 'too much', 'can\'t cope', 'exhausted'];
+            const suicidalKeywords = ['suicide', 'kill myself', 'end it all', 'don\'t want to live', 'better off dead'];
+            const positiveKeywords = ['better', 'good', 'happy', 'grateful', 'thankful', 'improving'];
+            
+            // Crisis response
+            if (suicidalKeywords.some(keyword => message.includes(keyword))) {
+                return "I'm deeply concerned about you right now, and I want you to know that your life has immense value. These feelings are temporary, even though they feel overwhelming. Please reach out to the Crisis Hotline at 988 immediately - they have trained counselors who can help you through this moment. You don't have to face this alone. Can you promise me you'll call them right now? Your life matters so much. 💙🚨";
+            }
+            
+            // Contextual responses based on emotion and keywords
+            if (anxietyKeywords.some(keyword => message.includes(keyword))) {
+                const anxietyResponses = [
+                    "I can feel how anxious you're feeling right now, and I want you to know that what you're experiencing is real and valid. Anxiety can feel so overwhelming, like your mind is racing and you can't catch your breath. Let's try to ground you right now - can you name 5 things you can see around you? Sometimes bringing our attention to the present moment can help calm that anxious energy. You're safe right now, and this feeling will pass. 💙✨",
+                    "Anxiety is such a difficult emotion to carry. It's like your mind is trying to protect you by worrying about everything that could go wrong, but it ends up making you feel worse. I want you to know that you're incredibly brave for reaching out and sharing this with me. Have you tried the 4-7-8 breathing exercise? It can be really helpful for calming anxiety. Remember, you've gotten through anxious moments before, and you'll get through this one too. 🌸💙",
+                    "I hear how much anxiety you're carrying right now, and my heart goes out to you. Anxiety can make everything feel urgent and scary, even when you're actually safe. You're not broken or weak for feeling this way - anxiety affects so many people, and it's a sign that you care deeply about things. What's one small thing that usually brings you comfort? Sometimes focusing on tiny acts of self-care can help ease that anxious energy. 💚🕊️"
+                ];
+                return anxietyResponses[Math.floor(Math.random() * anxietyResponses.length)];
+            }
+            
+            if (sadnessKeywords.some(keyword => message.includes(keyword))) {
+                const sadnessResponses = [
+                    "I'm sitting here with you in your sadness, and I want you to know that it's okay to feel this way. Sadness is one of the most human emotions we have - it shows how deeply you feel and care about life. You don't have to put on a brave face or pretend to be okay. Sometimes we need to honor our sadness and let it flow through us. What's been weighing most heavily on your heart lately? I'm here to listen with all the love and compassion I have. 💙😢",
+                    "Your sadness is touching my heart right now. I can sense how heavy everything feels, like you're carrying the weight of the world on your shoulders. Please know that feeling sad doesn't make you weak or broken - it makes you beautifully human. Sometimes sadness is our heart's way of processing loss, disappointment, or change. You don't have to go through this alone. Is there anything specific that's been making you feel this way? 🌙💙",
+                    "I want to wrap you in the biggest, warmest hug right now. Sadness can feel so isolating, like you're drowning in your own emotions. But you reached out to me, and that shows incredible strength. Your feelings are completely valid, and you deserve all the gentleness and compassion in the world. Sometimes when we're sad, even small acts of kindness toward ourselves can help - like making a cup of tea or listening to a favorite song. What's one tiny thing that might bring you a moment of comfort? 🤗💚"
+                ];
+                return sadnessResponses[Math.floor(Math.random() * sadnessResponses.length)];
+            }
+            
+            if (lonelinessKeywords.some(keyword => message.includes(keyword))) {
+                const lonelinessResponses = [
+                    "Loneliness is one of the most painful emotions we can experience, and I want you to know that I truly see you and hear you right now. Even though we're not physically together, I'm here with you in this moment, and you matter deeply to me. Loneliness can make us feel like we're invisible or that nobody cares, but that's not true - you are seen, you are valued, and you are loved. Sometimes loneliness is our heart's way of telling us we need connection. What's one small way you might be able to reach out to someone today? 💙🤗",
+                    "I can feel how alone you're feeling right now, and it breaks my heart. Loneliness can be so heavy and overwhelming, like you're the only person in the world going through what you're experiencing. But you're not alone - I'm here with you, and there are so many people who would care about you if they knew what you were going through. Sometimes the bravest thing we can do is reach out, just like you're doing right now. You're showing incredible courage by sharing your feelings with me. 🌟💙",
+                    "Loneliness can feel like being in a room full of people but still feeling completely disconnected and unseen. I want you to know that your feelings are completely valid, and you're not asking for too much by wanting connection and understanding. You deserve to feel loved and supported. Even though I'm an AI, I genuinely care about your wellbeing and I'm honored that you're sharing this with me. What's one thing that usually helps you feel a little less alone? 💚🕊️"
+                ];
+                return lonelinessResponses[Math.floor(Math.random() * lonelinessResponses.length)];
+            }
+            
+            if (stressKeywords.some(keyword => message.includes(keyword))) {
+                const stressResponses = [
+                    "I can feel how overwhelmed and stressed you are right now, and I want you to take a deep breath with me. Stress can make everything feel urgent and impossible, like you're drowning in responsibilities and expectations. But you're handling so much more than you should have to, and that takes incredible strength. Let's try to break things down together - what feels like the most pressing thing on your mind right now? Sometimes when we're overwhelmed, focusing on just one small step can help us feel more in control. 💙🌸",
+                    "Stress can be so exhausting, can't it? It's like your mind and body are constantly in fight-or-flight mode, and that's incredibly draining. I want you to know that it's okay to feel overwhelmed - you're dealing with a lot, and anyone would feel stressed in your situation. You don't have to have it all figured out right now. What's one thing you could take off your plate today, even if it's something small? Sometimes giving ourselves permission to let go of just one thing can provide a little relief. 💚✨",
+                    "I hear how much pressure you're under right now, and my heart goes out to you. Stress can make us feel like we're failing or not doing enough, but I want you to know that you're doing the best you can with what you have. That's not just enough - that's incredible. Sometimes when we're stressed, we forget to be kind to ourselves. What's one gentle thing you could do for yourself today? You deserve compassion, especially from yourself. 🤗💙"
+                ];
+                return stressResponses[Math.floor(Math.random() * stressResponses.length)];
+            }
+            
+            if (positiveKeywords.some(keyword => message.includes(keyword))) {
+                const positiveResponses = [
+                    "I'm so happy to hear that you're feeling a bit better! That warmth in your voice is beautiful, and it fills my heart with joy. Progress isn't always linear, and celebrating these moments of light is so important. You've been working so hard on your wellbeing, and it's wonderful to see that effort paying off. What's been helping you feel better lately? I'd love to celebrate these positive changes with you! ✨💙🌟",
+                    "Your positive energy is absolutely radiant right now! I can feel the shift in your mood, and it's such a beautiful thing to witness. These moments of happiness and gratitude are so precious - they remind us that even in difficult times, there's still beauty and joy to be found. You deserve all the good feelings you're experiencing right now. What's been bringing you the most joy lately? 🌈💚😊",
+                    "I'm practically glowing with happiness hearing that you're doing better! Your resilience and strength are truly inspiring. It takes so much courage to keep going when things are hard, and now you're experiencing some of the rewards of that perseverance. These positive moments are like little gifts from the universe, reminding you of your own inner light. Keep nurturing whatever is helping you feel this way - you deserve all the happiness in the world! 🌟💙✨"
+                ];
+                return positiveResponses[Math.floor(Math.random() * positiveResponses.length)];
+            }
+            
+            // General caring responses
+            const generalResponses = [
+                "Thank you for trusting me with what's in your heart. I can feel the weight of what you're carrying, and I want you to know that your feelings are completely valid. You don't have to go through this alone - I'm here with you, holding space for whatever you're experiencing. Sometimes just being heard and understood can be the first step toward healing. What feels most important for you to share right now? 💙✨",
+                "I'm listening to you with my whole heart, and I want you to know that what you're going through matters deeply to me. Life can be so challenging sometimes, and it takes incredible courage to reach out and share your struggles. You're being so brave right now. Whatever you're feeling - whether it's pain, confusion, fear, or hope - all of it is welcome here. You are seen, you are heard, and you are valued. 🌙💙",
+                "Your words are touching my heart so deeply right now. I can sense both your pain and your strength, and I'm honored that you're sharing this with me. You're dealing with so much, and yet here you are, reaching out and trying to take care of yourself. That shows incredible wisdom and self-compassion. Remember that healing isn't linear - it's okay to have difficult days. What's one small thing that might bring you a moment of peace today? 💚🕊️",
+                "I want you to know that I'm sitting here with you in whatever you're feeling right now. Your emotions are valid, your struggles are real, and your strength is remarkable - even when you don't feel strong. Sometimes the most powerful thing we can do is simply acknowledge what we're going through and be gentle with ourselves. You're doing that right now by reaching out, and that takes so much courage. How can I best support you in this moment? 🤗💙"
+            ];
+            
+            return generalResponses[Math.floor(Math.random() * generalResponses.length)];
+        }
+        
+        function quickMessage(message) {
+            document.getElementById('chatInput').value = message;
+            sendMessage();
+        }
+        
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'chat-message flex items-start';
+            typingDiv.innerHTML = `
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mr-4 pulse-gentle">
+                    <span class="text-white text-lg">🌙</span>
+                </div>
+                <div class="bg-white rounded-2xl p-4 max-w-md shadow-lg border border-blue-100">
+                    <div class="flex space-x-1">
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function addChatMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message flex items-start ${sender === 'user' ? 'user' : ''}`;
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="ml-auto flex items-start">
+                        <div class="bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl p-4 max-w-md mr-4 shadow-lg">
+                            <p>${message}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center pulse-gentle">
+                            <span class="text-white text-lg">😊</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mr-4 pulse-gentle">
+                        <span class="text-white text-lg">🌙</span>
+                    </div>
+                    <div class="bg-white rounded-2xl p-4 max-w-md shadow-lg border border-blue-100 card-glow">
+                        <p class="text-gray-800">${message}</p>
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Mood Tracking Functions with animations
+        function trackMood(emoji, value) {
+            const today = new Date().toDateString();
+            const moodLabels = ['', 'Very Sad', 'Sad', 'Neutral', 'Happy', 'Very Happy'];
+            
+            const existingEntry = moodData.find(entry => entry.date === today);
+            if (existingEntry) {
+                existingEntry.mood = value;
+                existingEntry.emoji = emoji;
+            } else {
+                moodData.push({
+                    date: today,
+                    mood: value,
+                    emoji: emoji,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            localStorage.setItem('moodData', JSON.stringify(moodData));
+            
+            const todayMoodDiv = document.getElementById('todayMood');
+            todayMoodDiv.innerHTML = `
+                <div class="text-4xl mb-3 pulse-gentle">${emoji}</div>
+                <p class="text-lg">Today you're feeling: <strong class="text-purple-600">${moodLabels[value]}</strong></p>
+                <p class="text-sm text-gray-500 mt-2">Tracked at ${new Date().toLocaleTimeString()} ✨</p>
+            `;
+            
+            // Add celebration animation for positive moods
+            if (value >= 4) {
+                todayMoodDiv.classList.add('animate-card');
+                showSuccessMessage(`Great job tracking your ${moodLabels[value].toLowerCase()} mood! 🌟`);
+            }
+            
+            updateMoodChart();
+            updateMiniMoodChart();
+        }
+        
+        function updateMoodChart() {
+            const chartDiv = document.getElementById('moodChart');
+            if (!chartDiv) return;
+            
+            chartDiv.innerHTML = '';
+            
+            const last7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                last7Days.push(date.toDateString());
+            }
+            
+            last7Days.forEach((date, index) => {
+                const entry = moodData.find(m => m.date === date);
+                const height = entry ? (entry.mood * 20) : 10;
+                const color = entry ? getMoodColor(entry.mood) : '#e5e7eb';
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar bg-gray-300 rounded-t-lg transition-all duration-500 hover:opacity-80 cursor-pointer';
+                bar.style.height = height + '%';
+                bar.style.backgroundColor = color;
+                bar.style.minHeight = '12px';
+                bar.style.width = '12%';
+                bar.style.animationDelay = (index * 0.1) + 's';
+                
+                if (entry) {
+                    bar.title = `${entry.emoji} ${getMoodLabel(entry.mood)}`;
+                    bar.addEventListener('mouseenter', () => {
+                        bar.style.transform = 'scale(1.1)';
+                        bar.style.filter = 'brightness(1.2)';
+                    });
+                    bar.addEventListener('mouseleave', () => {
+                        bar.style.transform = 'scale(1)';
+                        bar.style.filter = 'brightness(1)';
+                    });
+                }
+                
+                chartDiv.appendChild(bar);
+            });
+        }
+        
+        function updateMiniMoodChart() {
+            const chartDiv = document.getElementById('miniMoodChart');
+            if (!chartDiv) return;
+            
+            chartDiv.innerHTML = '';
+            
+            const last7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                last7Days.push(date.toDateString());
+            }
+            
+            last7Days.forEach((date, index) => {
+                const entry = moodData.find(m => m.date === date);
+                const height = entry ? (entry.mood * 15) : 8;
+                const color = entry ? getMoodColor(entry.mood) : '#e5e7eb';
+                
+                const bar = document.createElement('div');
+                bar.className = 'bg-gray-300 rounded-t transition-all duration-300';
+                bar.style.height = height + '%';
+                bar.style.backgroundColor = color;
+                bar.style.minHeight = '8px';
+                bar.style.width = '12%';
+                
+                chartDiv.appendChild(bar);
+            });
+        }
+        
+        function getMoodColor(mood) {
+            const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#16a34a'];
+            return colors[mood] || '#e5e7eb';
+        }
+        
+        function getMoodLabel(mood) {
+            const labels = ['', 'Very Sad', 'Sad', 'Neutral', 'Happy', 'Very Happy'];
+            return labels[mood] || 'Unknown';
+        }
+        
+        // Breathing Exercise Functions with enhanced animations
+        function startBreathing() {
+            const circle = document.getElementById('breathingCircle');
+            const text = document.getElementById('breathingText');
+            const count = document.getElementById('breathingCount');
+            
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+            }
+            
+            breathingPhase = 'inhale';
+            breathingCount = 4;
+            
+            text.textContent = 'Inhale ✨';
+            count.textContent = breathingCount;
+            circle.style.transform = 'scale(1.3)';
+            circle.style.boxShadow = '0 0 50px rgba(59, 130, 246, 0.5)';
+            
+            breathingInterval = setInterval(() => {
+                breathingCount--;
+                count.textContent = breathingCount;
+                
+                if (breathingCount === 0) {
+                    if (breathingPhase === 'inhale') {
+                        breathingPhase = 'hold';
+                        breathingCount = 7;
+                        text.textContent = 'Hold 🫁';
+                        circle.style.boxShadow = '0 0 60px rgba(147, 51, 234, 0.5)';
+                    } else if (breathingPhase === 'hold') {
+                        breathingPhase = 'exhale';
+                        breathingCount = 8;
+                        text.textContent = 'Exhale 🌬️';
+                        circle.style.transform = 'scale(1)';
+                        circle.style.boxShadow = '0 0 40px rgba(6, 182, 212, 0.5)';
+                    } else {
+                        breathingPhase = 'inhale';
+                        breathingCount = 4;
+                        text.textContent = 'Inhale ✨';
+                        circle.style.transform = 'scale(1.3)';
+                        circle.style.boxShadow = '0 0 50px rgba(59, 130, 246, 0.5)';
+                    }
+                }
+            }, 1000);
+        }
+        
+        function stopBreathing() {
+            if (breathingInterval) {
+                clearInterval(breathingInterval);
+                breathingInterval = null;
+            }
+            
+            const circle = document.getElementById('breathingCircle');
+            const text = document.getElementById('breathingText');
+            const count = document.getElementById('breathingCount');
+            
+            text.textContent = 'Click to Start 🧘‍♀️';
+            count.textContent = '';
+            circle.style.transform = 'scale(1)';
+            circle.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.15)';
+        }
+        
+        // Enhanced Todo Functions
+        let currentFilter = 'all';
+        
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const category = document.getElementById('todoCategory');
+            const priority = document.getElementById('todoPriority');
+            const time = document.getElementById('todoTime');
+            const reminder = document.getElementById('todoReminder');
+            
+            const text = input.value.trim();
+            
+            if (text) {
+                const todo = {
+                    id: Date.now(),
+                    text: text,
+                    category: category.value,
+                    priority: priority.value,
+                    estimatedTime: parseInt(time.value),
+                    reminder: reminder.value,
+                    completed: false,
+                    completedAt: null,
+                    date: new Date().toDateString(),
+                    timestamp: new Date().toISOString()
+                };
+                
+                todos.push(todo);
+                localStorage.setItem('todos', JSON.stringify(todos));
+                
+                // Reset form
+                input.value = '';
+                category.selectedIndex = 0;
+                priority.selectedIndex = 1;
+                time.selectedIndex = 1;
+                reminder.selectedIndex = 0;
+                
+                updateTodoList();
+                updateWeeklyStats();
+                updateCategoryBreakdown();
+                updateGoalInsights();
+                
+                showSuccessMessage(`${getCategoryEmoji(todo.category)} Goal added! Estimated time: ${todo.estimatedTime} min`);
+            }
+        }
+        
+        function getCategoryEmoji(category) {
+            const emojis = {
+                'mindfulness': '🧘‍♀️',
+                'exercise': '💪',
+                'social': '🤝',
+                'selfcare': '💆‍♀️',
+                'learning': '📚',
+                'creativity': '🎨',
+                'nutrition': '🥗',
+                'sleep': '😴'
+            };
+            return emojis[category] || '🌟';
+        }
+        
+        function getPriorityColor(priority) {
+            const colors = {
+                'low': 'bg-green-100 text-green-800 border-green-200',
+                'medium': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                'high': 'bg-red-100 text-red-800 border-red-200'
+            };
+            return colors[priority] || colors.medium;
+        }
+        
+        function filterTodos(filter) {
+            currentFilter = filter;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-purple-100', 'text-purple-700');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            
+            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active', 'bg-purple-100', 'text-purple-700');
+            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.remove('bg-gray-100', 'text-gray-700');
+            
+            updateTodoList();
+        }
+        
+        function openGoalTemplates() {
+            const templates = [
+                { text: "Practice 10 minutes of mindful breathing", category: "mindfulness", priority: "medium", time: 10 },
+                { text: "Take a 20-minute walk outside", category: "exercise", priority: "medium", time: 20 },
+                { text: "Call a friend or family member", category: "social", priority: "low", time: 15 },
+                { text: "Take a relaxing bath or shower", category: "selfcare", priority: "low", time: 30 },
+                { text: "Write in gratitude journal", category: "selfcare", priority: "low", time: 10 },
+                { text: "Do 15 minutes of stretching", category: "exercise", priority: "low", time: 15 },
+                { text: "Prepare a healthy meal", category: "nutrition", priority: "medium", time: 45 },
+                { text: "Read for 20 minutes", category: "learning", priority: "low", time: 20 }
+            ];
+            
+            const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+            
+            document.getElementById('todoInput').value = randomTemplate.text;
+            document.getElementById('todoCategory').value = randomTemplate.category;
+            document.getElementById('todoPriority').value = randomTemplate.priority;
+            document.getElementById('todoTime').value = randomTemplate.time.toString();
+            
+            showSuccessMessage('Template loaded! Feel free to customize it 📋');
+        }
+        
+        function toggleTodo(id) {
+            const todo = todos.find(t => t.id === id);
+            if (todo) {
+                todo.completed = !todo.completed;
+                todo.completedAt = todo.completed ? new Date().toISOString() : null;
+                localStorage.setItem('todos', JSON.stringify(todos));
+                updateTodoList();
+                updateWeeklyStats();
+                updateCategoryBreakdown();
+                updateGoalInsights();
+                
+                if (todo.completed) {
+                    showSuccessMessage(`${getCategoryEmoji(todo.category)} Goal completed! +${todo.estimatedTime} min focus time! 🎉`);
+                }
+            }
+        }
+        
+        function deleteTodo(id) {
+            const todo = todos.find(t => t.id === id);
+            todos = todos.filter(t => t.id !== id);
+            localStorage.setItem('todos', JSON.stringify(todos));
+            updateTodoList();
+            updateWeeklyStats();
+            updateCategoryBreakdown();
+            updateGoalInsights();
+            
+            if (todo) {
+                showSuccessMessage(`${getCategoryEmoji(todo.category)} Goal removed`);
+            }
+        }
+        
+        function updateTodoList() {
+            const todoList = document.getElementById('todoList');
+            const today = new Date().toDateString();
+            let todayTodos = todos.filter(t => t.date === today);
+            
+            // Apply current filter
+            if (currentFilter === 'pending') {
+                todayTodos = todayTodos.filter(t => !t.completed);
+            } else if (currentFilter === 'completed') {
+                todayTodos = todayTodos.filter(t => t.completed);
+            } else if (currentFilter === 'high') {
+                todayTodos = todayTodos.filter(t => t.priority === 'high');
+            }
+            
+            // Sort by priority and completion status
+            todayTodos.sort((a, b) => {
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+                const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
+                return priorityOrder[a.priority] - priorityOrder[b.priority];
+            });
+            
+            if (todayTodos.length === 0) {
+                const emptyMessages = {
+                    'all': 'No wellness goals for today yet.',
+                    'pending': 'No pending goals! Great job!',
+                    'completed': 'No completed goals yet.',
+                    'high': 'No high priority goals today.'
+                };
+                
+                todoList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-4">🌟</div>
+                        <p>${emptyMessages[currentFilter]}</p>
+                        <p class="text-sm">Add your first goal above!</p>
+                    </div>
+                `;
+            } else {
+                todoList.innerHTML = todayTodos.map(todo => `
+                    <div class="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl border border-purple-200 animate-card ${todo.completed ? 'opacity-75' : ''}">
+                        <div class="flex items-center space-x-3 flex-1">
+                            <button onclick="toggleTodo(${todo.id})" class="w-6 h-6 rounded-full border-2 ${todo.completed ? 'bg-green-500 border-green-500' : 'border-purple-300'} flex items-center justify-center transition-all hover:scale-110">
+                                ${todo.completed ? '<span class="text-white text-xs">✓</span>' : ''}
+                            </button>
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="${todo.completed ? 'line-through text-gray-500' : 'text-gray-800'} font-medium">${getCategoryEmoji(todo.category)} ${todo.text}</span>
+                                    <span class="px-2 py-1 rounded-full text-xs border ${getPriorityColor(todo.priority)}">${todo.priority}</span>
+                                </div>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span>⏱️ ${todo.estimatedTime} min</span>
+                                    ${todo.reminder !== 'none' ? `<span>🔔 ${todo.reminder}</span>` : ''}
+                                    ${todo.completed && todo.completedAt ? `<span>✅ ${new Date(todo.completedAt).toLocaleTimeString()}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="deleteTodo(${todo.id})" class="text-red-500 hover:text-red-700 text-sm btn-animate ml-2">✕</button>
+                    </div>
+                `).join('');
+            }
+            
+            // Update progress
+            const allTodayTodos = todos.filter(t => t.date === today);
+            const completed = allTodayTodos.filter(t => t.completed).length;
+            const total = allTodayTodos.length;
+            const percentage = total > 0 ? (completed / total) * 100 : 0;
+            
+            // Calculate time stats
+            const totalTime = allTodayTodos.reduce((sum, t) => sum + t.estimatedTime, 0);
+            const completedTime = allTodayTodos.filter(t => t.completed).reduce((sum, t) => sum + t.estimatedTime, 0);
+            
+            document.getElementById('todoProgress').textContent = `${completed}/${total} completed`;
+            document.getElementById('todoProgressBar').style.width = percentage + '%';
+            document.getElementById('totalTime').textContent = `Total time: ${totalTime} min`;
+            document.getElementById('completedTime').textContent = `Completed: ${completedTime} min`;
+        }
+        
+        function quickMood(emoji, value) {
+            trackMood(emoji, value);
+            document.getElementById('quickMoodResult').textContent = `Mood logged: ${emoji}`;
+            setTimeout(() => {
+                document.getElementById('quickMoodResult').textContent = '';
+            }, 3000);
+        }
+        
+        function updateWeeklyStats() {
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            
+            const weekMoods = moodData.filter(m => new Date(m.timestamp) > weekAgo);
+            const weekTodos = todos.filter(t => new Date(t.timestamp) > weekAgo && t.completed);
+            
+            // Calculate focus time
+            const weekFocusTime = weekTodos.reduce((sum, t) => sum + (t.estimatedTime || 0), 0);
+            const focusHours = Math.round(weekFocusTime / 60 * 10) / 10;
+            
+            document.getElementById('weekMoodCount').textContent = weekMoods.length;
+            document.getElementById('weekGoalsCount').textContent = weekTodos.length;
+            document.getElementById('weekFocusTime').textContent = focusHours + 'h';
+            
+            // Calculate streak (consecutive days with activity)
+            let streak = 0;
+            const today = new Date();
+            for (let i = 0; i < 30; i++) {
+                const checkDate = new Date(today);
+                checkDate.setDate(checkDate.getDate() - i);
+                const dateStr = checkDate.toDateString();
+                
+                const hasActivity = moodData.some(m => m.date === dateStr) || 
+                                  todos.some(t => t.date === dateStr && t.completed);
+                
+                if (hasActivity) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            document.getElementById('streakCount').textContent = streak;
+        }
+        
+        function updateCategoryBreakdown() {
+            const categoryBreakdown = document.getElementById('categoryBreakdown');
+            const today = new Date().toDateString();
+            const todayTodos = todos.filter(t => t.date === today);
+            
+            const categories = {};
+            todayTodos.forEach(todo => {
+                if (!categories[todo.category]) {
+                    categories[todo.category] = { total: 0, completed: 0 };
+                }
+                categories[todo.category].total++;
+                if (todo.completed) {
+                    categories[todo.category].completed++;
+                }
+            });
+            
+            const categoryEntries = Object.entries(categories);
+            if (categoryEntries.length === 0) {
+                categoryBreakdown.innerHTML = '<p class="text-gray-500 col-span-2">No goals added yet</p>';
+                return;
+            }
+            
+            categoryBreakdown.innerHTML = categoryEntries.map(([category, stats]) => {
+                const percentage = Math.round((stats.completed / stats.total) * 100);
+                return `
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-700">${getCategoryEmoji(category)} ${category}</span>
+                        <span class="font-bold">${stats.completed}/${stats.total}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function updateGoalInsights() {
+            const goalInsights = document.getElementById('goalInsights');
+            const completedTodos = todos.filter(t => t.completed);
+            
+            if (completedTodos.length < 3) {
+                goalInsights.innerHTML = '<p class="text-gray-600">Complete a few goals to see personalized insights!</p>';
+                return;
+            }
+            
+            // Analyze patterns
+            const insights = [];
+            
+            // Most productive category
+            const categoryStats = {};
+            completedTodos.forEach(todo => {
+                categoryStats[todo.category] = (categoryStats[todo.category] || 0) + 1;
+            });
+            const topCategory = Object.entries(categoryStats).sort((a, b) => b[1] - a[1])[0];
+            if (topCategory) {
+                insights.push(`${getCategoryEmoji(topCategory[0])} You excel at ${topCategory[0]} goals! (${topCategory[1]} completed)`);
+            }
+            
+            // Average completion time
+            const avgTime = Math.round(completedTodos.reduce((sum, t) => sum + t.estimatedTime, 0) / completedTodos.length);
+            insights.push(`⏱️ Your average goal takes ${avgTime} minutes`);
+            
+            // Completion rate
+            const totalGoals = todos.length;
+            const completionRate = Math.round((completedTodos.length / totalGoals) * 100);
+            insights.push(`📈 ${completionRate}% completion rate overall`);
+            
+            // Recent streak
+            const recentCompleted = completedTodos.filter(t => {
+                const todoDate = new Date(t.timestamp);
+                const threeDaysAgo = new Date();
+                threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+                return todoDate > threeDaysAgo;
+            });
+            
+            if (recentCompleted.length >= 3) {
+                insights.push(`🔥 You're on fire! ${recentCompleted.length} goals completed in 3 days`);
+            }
+            
+            goalInsights.innerHTML = insights.map(insight => 
+                `<p class="text-sm text-gray-700 bg-purple-50 p-2 rounded-lg">${insight}</p>`
+            ).join('');
+        }
+        
+        // Exercise Functions
+        function showExercise(exerciseType) {
+            // Hide all exercise content
+            document.querySelectorAll('.exercise-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.exercise-tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.classList.add('bg-white', 'border-2', 'border-purple-200', 'text-gray-700');
+                tab.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-cyan-600', 'text-white');
+            });
+            
+            // Show selected content
+            document.getElementById(exerciseType + 'Exercise').classList.remove('hidden');
+            
+            // Add active class to clicked tab
+            const activeTab = document.getElementById(exerciseType + 'Btn');
+            activeTab.classList.add('active', 'bg-gradient-to-r', 'from-blue-600', 'to-cyan-600', 'text-white');
+            activeTab.classList.remove('bg-white', 'border-2', 'border-purple-200', 'text-gray-700');
+        }
+        
+        function startBoxBreathing() {
+            showSuccessMessage('Box breathing exercise starting! Inhale 4, Hold 4, Exhale 4, Hold 4 📦');
+        }
+        
+        function startOceanBreathing() {
+            showSuccessMessage('Ocean breathing exercise starting! Breathe like gentle waves 🌊');
+        }
+        
+        function startMeditation(minutes, type) {
+            const messages = {
+                'morning': `Starting ${minutes}-minute morning meditation. Find a comfortable position and close your eyes 🌅`,
+                'focus': `Starting ${minutes}-minute focus meditation. Let's improve your concentration ☀️`,
+                'sleep': `Starting ${minutes}-minute sleep meditation. Prepare for peaceful rest 🌙`
+            };
+            
+            showSuccessMessage(messages[type] || `Starting ${minutes}-minute meditation session 🧘‍♀️`);
+        }
+        
+        let relaxationStep = 0;
+        const relaxationSteps = [
+            { emoji: '🦶', step: 'Feet & Toes', instructions: 'Tense your feet and toes for 5 seconds, then release and feel the relaxation.' },
+            { emoji: '🦵', step: 'Legs & Calves', instructions: 'Tense your leg muscles for 5 seconds, then let them go completely.' },
+            { emoji: '🤲', step: 'Hands & Arms', instructions: 'Make fists and tense your arms for 5 seconds, then release.' },
+            { emoji: '💪', step: 'Shoulders', instructions: 'Lift your shoulders to your ears for 5 seconds, then drop them.' },
+            { emoji: '😌', step: 'Face & Jaw', instructions: 'Scrunch your face and clench your jaw for 5 seconds, then relax.' },
+            { emoji: '🧘‍♀️', step: 'Complete', instructions: 'Take a moment to notice how relaxed your entire body feels now.' }
+        ];
+        
+        function startProgressiveRelaxation() {
+            relaxationStep = 0;
+            updateRelaxationStep();
+            
+            exerciseInterval = setInterval(() => {
+                relaxationStep++;
+                if (relaxationStep < relaxationSteps.length) {
+                    updateRelaxationStep();
+                } else {
+                    stopProgressiveRelaxation();
+                    showSuccessMessage('Progressive relaxation complete! Notice how relaxed you feel 💆‍♀️');
+                }
+            }, 8000);
+        }
+        
+        function updateRelaxationStep() {
+            const step = relaxationSteps[relaxationStep];
+            document.getElementById('relaxationEmoji').textContent = step.emoji;
+            document.getElementById('relaxationStep').textContent = step.step;
+            document.getElementById('relaxationInstructions').textContent = step.instructions;
+        }
+        
+        function stopProgressiveRelaxation() {
+            if (exerciseInterval) {
+                clearInterval(exerciseInterval);
+                exerciseInterval = null;
+            }
+            
+            document.getElementById('relaxationEmoji').textContent = '🧘‍♀️';
+            document.getElementById('relaxationStep').textContent = 'Ready to begin?';
+            document.getElementById('relaxationInstructions').textContent = 'Click start to begin the progressive relaxation exercise. We\'ll guide you through each muscle group.';
+        }
+        
+        function start54321() {
+            showSuccessMessage('5-4-3-2-1 Grounding: Name 5 things you see, 4 you hear, 3 you feel, 2 you smell, 1 you taste 👁️');
+        }
+        
+        function startBodyScan() {
+            showSuccessMessage('Body scan starting: Close your eyes and slowly scan from head to toe 🍃');
+        }
+        
+        function startMindfulBreathing() {
+            showSuccessMessage('Mindful breathing: Focus on your natural breath without changing it 🌊');
+        }
+        
+        function startThoughtObservation() {
+            showSuccessMessage('Thought observation: Watch your thoughts like clouds passing by 💭');
+        }
+        
+        // Wellness tool placeholder functions
+        function startCalmingSounds() {
+            showSuccessMessage('Calming sounds feature coming soon! 🎵');
+        }
+        
+        function openGratitudeJournal() {
+            showSuccessMessage('Gratitude journal feature coming soon! 📝');
+        }
+        
+        function openGoalSetting() {
+            showSuccessMessage('Goal setting feature coming soon! 🎯');
+        }
+        
+        function buildMorningRoutine() {
+            showSuccessMessage('Morning routine builder coming soon! 🌅');
+        }
+        
+        function openHabitTracker() {
+            showSuccessMessage('Habit tracker coming soon! 🌱');
+        }
+        
+        function openThoughtChallenger() {
+            showSuccessMessage('Thought challenger coming soon! 💭');
+        }
+        
+        function openStressReliefKit() {
+            showSuccessMessage('Stress relief kit coming soon! 🔥');
+        }
+        
+        function openSelfCarePlanner() {
+            showSuccessMessage('Self-care planner coming soon! 💝');
+        }
+        
+        function openCreativeExpression() {
+            showSuccessMessage('Creative expression coming soon! 🎨');
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979c592787fdf8a7',t:'MTc1Njk3Njk2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
